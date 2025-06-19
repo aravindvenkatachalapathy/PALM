@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.12)
+project(PALM_OpenFAST_Coupling)
+
+# Find required packages
+find_package(MPI REQUIRED)
+find_package(OpenFAST REQUIRED)
+find_package(yaml-cpp REQUIRED)
+
+# Create executable
+add_executable(palm_openfast 
+    PALM_OpenFAST_Driver.cpp
+)
+
+# Link libraries
+target_link_libraries(palm_openfast
+    OpenFAST::openfastcpplib
+    yaml-cpp
+    MPI::MPI_CXX
+    pthread
+)
+
+# Set C++ standard
+target_compile_features(palm_openfast PRIVATE cxx_std_11)
+
+# Include directories
+target_include_directories(palm_openfast PRIVATE
+    ${MPI_CXX_INCLUDE_DIRS}
+)
